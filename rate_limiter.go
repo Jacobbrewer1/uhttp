@@ -7,7 +7,7 @@ type RateLimiter interface {
 	Allow(key string) bool
 }
 
-type rateLimiterImpl struct {
+type rateLimiter struct {
 	// limiter is the limiter.
 	limiters map[string]*rate.Limiter
 
@@ -38,14 +38,14 @@ func NewRateLimiterWithBurst(rps float64, burst int) RateLimiter {
 		burst = int(rps)
 	}
 
-	return &rateLimiterImpl{
+	return &rateLimiter{
 		limiters: make(map[string]*rate.Limiter),
 		rps:      rps,
 		burst:    burst,
 	}
 }
 
-func (r *rateLimiterImpl) Allow(key string) bool {
+func (r *rateLimiter) Allow(key string) bool {
 	// Rate limits the request.
 	limiter, ok := r.limiters[key]
 	if !ok {

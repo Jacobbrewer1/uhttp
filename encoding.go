@@ -16,7 +16,7 @@ func Encode[T any](w http.ResponseWriter, status int, v T) error {
 	return nil
 }
 
-func DecodeJSONBody[T any](r *http.Request, v *T) error {
+func DecodeRequestJSON[T any](r *http.Request, v *T) error {
 	return DecodeJSON[T](r.Body, v)
 }
 

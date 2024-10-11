@@ -32,7 +32,7 @@ func TestDecodeJSONBody(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := new(common.Message)
-			err := DecodeJSONBody(tt.args.r, got)
+			err := DecodeRequestJSON(tt.args.r, got)
 			require.Equal(t, tt.wantErr, err)
 			require.Equal(t, tt.want, got)
 		})
