@@ -24,7 +24,7 @@ func NewMessage(message string, args ...any) *common.Message {
 
 func SendMessageWithStatus(w http.ResponseWriter, status int, message string, args ...any) {
 	msg := NewMessage(message, args...)
-	err := Encode(w, status, msg)
+	err := EncodeJSON(w, status, msg)
 	if err != nil {
 		slog.Error("Error encoding message", slog.String(loggingKeyError, err.Error()))
 	}
@@ -52,7 +52,7 @@ func NewErrorMessage(message string, err error, args ...any) *common.ErrorMessag
 
 func SendErrorMessageWithStatus(w http.ResponseWriter, status int, message string, err error, args ...any) {
 	msg := NewErrorMessage(message, err, args...)
-	err = Encode(w, status, msg)
+	err = EncodeJSON(w, status, msg)
 	if err != nil {
 		slog.Error("Error encoding error message", slog.String("error", err.Error()))
 	}

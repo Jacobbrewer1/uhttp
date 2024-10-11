@@ -7,8 +7,14 @@ import (
 	"net/http"
 )
 
+// Encode defaults to JSON encoding
 func Encode[T any](w http.ResponseWriter, status int, v T) error {
-	w.Header().Set("Content-Type", "application/json")
+	return EncodeJSON(w, status, v)
+}
+
+// EncodeJSON encodes a response as JSON
+func EncodeJSON[T any](w http.ResponseWriter, status int, v T) error {
+	w.Header().Set(ContentTypeJSON, ContentTypeJSON)
 	w.WriteHeader(status)
 	if err := json.NewEncoder(w).Encode(v); err != nil {
 		return fmt.Errorf("encode json: %w", err)
