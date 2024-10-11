@@ -12,11 +12,12 @@ type ResponseWriter struct {
 	http.ResponseWriter
 	statusCode      int
 	bytesWritten    uint64
-	isHeaderWritten bool
+	isStatusWritten bool
 	startTime       time.Time
 
-	defaultStatusCode int
-	defaultHeaders    map[string]string
+	defaultStatusCode     int
+	defaultHeaders        map[string]string
+	defaultHeadersWritten bool
 }
 
 // NewResponseWriter creates a new ResponseWriter.
@@ -37,10 +38,8 @@ func NewResponseWriter(w http.ResponseWriter, opts ...WriterOpt) *ResponseWriter
 
 // Write writes the data to the connection as part of an HTTP reply.
 func (c *ResponseWriter) Write(p []byte) (bytes int, err error) {
-	if !c.isHeaderWritten {
-		c.writeDefaultHeaders()
-		c.WriteHeader(c.defaultStatusCode)
-	}
+	c.writeDefaultHeaders()
+	c.WriteHeader(c.defaultStatusCode)
 	bytes, err = c.ResponseWriter.Write(p)
 	c.bytesWritten += uint64(bytes)
 	return
@@ -48,24 +47,19 @@ func (c *ResponseWriter) Write(p []byte) (bytes int, err error) {
 
 // WriteHeader sends an HTTP response header with the provided status code.
 func (c *ResponseWriter) WriteHeader(code int) {
-	if c.isHeaderWritten {
+	if c.isStatusWritten {
 		return
 	}
-
-	if c.Header().Get(HeaderContentType) == "" {
-		c.writeDefaultHeaders()
-	}
-
+	c.writeDefaultHeaders()
 	c.ResponseWriter.WriteHeader(code)
-	c.isHeaderWritten = true
+	c.isStatusWritten = true
 	c.statusCode = code
 }
 
 // StatusCode returns the status code.
 func (c *ResponseWriter) StatusCode() int {
-	if !c.isHeaderWritten || c.statusCode == 0 {
-		// If the header has not been written or the status code has not been set, assume 200.
-		return http.StatusOK
+	if !c.isStatusWritten || c.statusCode == 0 {
+		return c.defaultStatusCode
 	}
 	return c.statusCode
 }
@@ -77,7 +71,7 @@ func (c *ResponseWriter) BytesWritten() uint64 {
 
 // IsHeaderWritten returns true if the header has been written.
 func (c *ResponseWriter) IsHeaderWritten() bool {
-	return c.isHeaderWritten
+	return c.isStatusWritten
 }
 
 // GetRequestDuration gets the duration of the request
@@ -100,8 +94,18 @@ func (c *ResponseWriter) checkDefaults() {
 }
 
 func (c *ResponseWriter) writeDefaultHeaders() {
+	if c.defaultHeadersWritten {
+		return
+	}
+
+	c.defaultHeadersWritten = true
+
 	if c.defaultHeaders != nil {
 		for header, value := range c.defaultHeaders {
+			if c.Header().Get(header) != "" {
+				// If the header has already been set, do not overwrite it.
+				continue
+			}
 			c.Header().Set(header, value)
 		}
 	}

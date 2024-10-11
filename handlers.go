@@ -37,3 +37,11 @@ func UnauthorizedHandler() http.HandlerFunc {
 		}
 	}
 }
+
+func GenericErrorHandler(w http.ResponseWriter, r *http.Request, err error) {
+	msg := NewErrorMessage(MsgBadRequest, err)
+	encErr := EncodeJSON(w, http.StatusBadRequest, msg)
+	if encErr != nil {
+		slog.Error("Error encoding response", slog.String(loggingKeyError, encErr.Error()))
+	}
+}
