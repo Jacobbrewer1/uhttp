@@ -1,4 +1,4 @@
-module github.com/Jacobbrewer1/uhttp
+module github.com/jacobbrewer1/uhttp
 
 go 1.23
 

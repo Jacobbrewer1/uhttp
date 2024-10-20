@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/Jacobbrewer1/uhttp/common"
+	"github.com/jacobbrewer1/uhttp/common"
 	"github.com/stretchr/testify/suite"
 )
 
