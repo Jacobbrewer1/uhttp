@@ -8,7 +8,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/stretchr/testify v1.10.0
 	github.com/vektra/mockery/v2 v2.49.0
-	golang.org/x/time v0.7.0
+	golang.org/x/time v0.8.0
 )
 
 require (
