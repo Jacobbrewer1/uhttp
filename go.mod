@@ -7,7 +7,7 @@ toolchain go1.23.1
 require (
 	github.com/google/uuid v1.6.0
 	github.com/stretchr/testify v1.10.0
-	github.com/vektra/mockery/v2 v2.49.0
+	github.com/vektra/mockery/v2 v2.49.1
 	golang.org/x/time v0.8.0
 )
 
