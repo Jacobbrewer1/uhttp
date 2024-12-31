@@ -77,8 +77,8 @@ func (s *ErrorMessageSuite) TestNewErrorMessage() {
 	msg := NewErrorMessage("test message", errors.New("test error"))
 
 	expected := &common.ErrorMessage{
-		Message: ptr("test message"),
-		Error:   ptr("test error"),
+		Message: "test message",
+		Error:   "test error",
 	}
 	s.Equal(expected, msg)
 }
@@ -87,8 +87,8 @@ func (s *ErrorMessageSuite) TestNewErrorMessageNoError() {
 	msg := NewErrorMessage("test message", nil)
 
 	expected := &common.ErrorMessage{
-		Message: ptr("test message"),
-		Error:   ptr(""),
+		Message: "test message",
+		Error:   "",
 	}
 	s.Equal(expected, msg)
 }

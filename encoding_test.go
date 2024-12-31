@@ -26,7 +26,7 @@ func TestDecodeJSONBody(t *testing.T) {
 			args: args{
 				r: httptest.NewRequest(http.MethodGet, "/", strings.NewReader(`{"message": "hello"}`)),
 			},
-			want: &common.Message{Message: ptr("hello")},
+			want: &common.Message{Message: "hello"},
 		},
 	}
 	for _, tt := range tests {
