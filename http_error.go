@@ -1,6 +1,10 @@
 package uhttp
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/jacobbrewer1/uhttp/common"
+)
 
 type StatusCoder interface {
 	StatusCode() int
@@ -8,14 +12,7 @@ type StatusCoder interface {
 
 type HTTPError struct {
 	error
-
-	Title   string        `json:"title"`
-	Detail  string        `json:"detail"`
-	Status  int           `json:"status"`
-	Details []interface{} `json:"details,omitempty"`
-
-	// RequestID is our addition in order to be able to trace requests in the log.
-	RequestID string `json:"request_id,omitempty"`
+	common.ErrorMessage
 }
 
 func (e *HTTPError) Error() string {
@@ -29,16 +26,27 @@ func (e *HTTPError) StatusCode() int {
 	return e.Status
 }
 
+func (e *HTTPError) SetRequestId(requestId string) {
+	e.RequestId = requestId
+}
+
 // NewHTTPError creates a new HTTPError.
 func NewHTTPError(code int, err error, details ...any) *HTTPError {
-	return &HTTPError{
-		error:   err,
-		Title:   http.StatusText(code),
-		Detail:  err.Error(),
-		Details: details,
-		Status:  code,
+	errMsg := &common.ErrorMessage{
+		Title:  http.StatusText(code),
+		Detail: err.Error(),
+		Status: code,
 
-		// RequestID will be populated at error write time
-		RequestID: "",
+		// RequestId will be populated at error write time
+		RequestId: "",
+	}
+
+	if len(details) > 0 {
+		errMsg.Details = &details
+	}
+
+	return &HTTPError{
+		error:        err,
+		ErrorMessage: *errMsg,
 	}
 }
