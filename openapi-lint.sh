@@ -26,7 +26,7 @@ totalHints=0
 for file in $routesFiles; do
   rm -rf ./lint-output.json
 
-  gum spin --spinner dot --title "Linting $file" -- lint-openapi -c ./openapi-lint-config.yaml -s "$file" >./lint-output.json
+  gum spin --spinner dot --title "Linting $file" -- lint-openapi -c ./openapi-lint-config.yaml -s "$file" > ./lint-output.json
 
   # Make ./pkg/codegen/apis/api/routes.yaml -> api/routes.yaml
   prettyName=$(echo $file | sed 's/\.\/pkg\/codegen\/apis\///' | sed 's/\/routes.yaml//')

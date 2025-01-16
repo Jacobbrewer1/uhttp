@@ -3,6 +3,4 @@ limits:
   warnings: 25
 outputFormat: 'json'
 summaryOnly: false
-ignore:
-  - paths
-  - info
+markdownReport: true
