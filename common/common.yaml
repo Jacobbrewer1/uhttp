@@ -1,4 +1,20 @@
 openapi: 3.0.0
+info:
+  title: 'Common HTTP components'
+  description: 'Common HTTP components'
+  version: '0.0.1'
+paths:
+  /:
+    get:
+      summary: 'Placeholder'
+      description: 'Placeholder'
+      responses:
+        '200':
+          description: 'Placeholder'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
 components:
   schemas:
     message:
