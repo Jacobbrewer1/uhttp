@@ -37,6 +37,7 @@ components:
         - title
         - detail
         - status
+        - details
         - requestId
       properties:
         title:
@@ -52,6 +53,6 @@ components:
           maximum: 599
         details:
           type: array
-        requestId:
+        request_id:
           type: string
           example: '123456'
