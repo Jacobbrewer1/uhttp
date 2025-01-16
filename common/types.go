@@ -7,7 +7,7 @@ package common
 type ErrorMessage struct {
 	Detail    string        `json:"detail"`
 	Details   []interface{} `json:"details"`
-	RequestId *string       `json:"request_id,omitempty"`
+	RequestId string        `json:"request_id"`
 	Status    int           `json:"status"`
 	Title     string        `json:"title"`
 }

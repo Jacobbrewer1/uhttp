@@ -38,7 +38,7 @@ components:
         - detail
         - status
         - details
-        - requestId
+        - request_id
       properties:
         title:
           type: string
