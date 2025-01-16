@@ -100,15 +100,6 @@ func GenericErrorHandler(w http.ResponseWriter, r *http.Request, err error) {
 		)
 	}
 
-	details := []string{
-		fmt.Sprintf("method: %s", r.Method),
-		fmt.Sprintf("path: %s", r.URL.Path),
-	}
-
-	if r.URL.RawQuery != "" {
-		details = append(details, fmt.Sprintf("query: %s", r.URL.RawQuery))
-	}
-
 	msg := NewHTTPError(http.StatusBadRequest, err)
 	MustEncode(rw, http.StatusBadRequest, msg)
 }
