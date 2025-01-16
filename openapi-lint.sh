@@ -25,9 +25,6 @@ for file in $routesFiles; do
   score=$(jq '.impactScore.categorizedSummary.overall' ./lint-output.json)
 done
 
-# Combine all the reports into a single file. Separate each report with a horizontal rule.
-cat ./common-validator-report.md >./routes-validator-report.md
-
 if [ "$score" -lt 100 ]; then
   echo "IBM OpenAPI Linter found issues with the OpenAPI specification. Please fix the issues and try again."
   exit 1
