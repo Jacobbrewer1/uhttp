@@ -8,7 +8,7 @@ fi
 
 score=0
 
-lint-openapi -c ./openapi-lint-config.yaml -s ./common/config/openapi.yaml >./lint-output.json
+lint-openapi -c ./openapi-lint-config.yaml -s ./common/common.yaml >./lint-output.json
 score=$(jq '.impactScore.categorizedSummary.overall' ./lint-output.json)
 
 if [ "$score" -lt 100 ]; then
