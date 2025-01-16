@@ -6,24 +6,10 @@ if ! command -v lint-openapi >/dev/null; then
   exit 1
 fi
 
-# Find all routes.yaml files in the ./pkg/codegen/apis directory
-routesFiles=$(find ./pkg/codegen/apis -name "routes.yaml")
-
 score=0
 
-# Lint each routes.yaml file
-for file in $routesFiles; do
-  rm -rf ./lint-output.json
-
-  lint-openapi -c ./openapi-lint-config.yaml -s "$file" >./lint-output.json
-
-  # Make ./pkg/codegen/apis/api/routes.yaml -> api
-  apiName=$(echo "$file" | sed -e 's/.*\/\(.*\)\/routes.yaml/\1/')
-
-  mv ./routes-validator-report.md "./routes-validator-report-$apiName.md"
-
-  score=$(jq '.impactScore.categorizedSummary.overall' ./lint-output.json)
-done
+lint-openapi -c ./openapi-lint-config.yaml -s "$file" >./lint-output.json
+score=$(jq '.impactScore.categorizedSummary.overall' ./lint-output.json)
 
 if [ "$score" -lt 100 ]; then
   echo "IBM OpenAPI Linter found issues with the OpenAPI specification. Please fix the issues and try again."
