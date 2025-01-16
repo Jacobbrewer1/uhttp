@@ -26,7 +26,7 @@ for file in $routesFiles; do
 done
 
 # Combine all the reports into a single file. Separate each report with a horizontal rule.
-cat ./routes-validator-report-*.md >./routes-validator-report.md
+cat ./common-validator-report*.md >./routes-validator-report.md
 
 if [ "$score" -lt 100 ]; then
   echo "IBM OpenAPI Linter found issues with the OpenAPI specification. Please fix the issues and try again."
