@@ -21,7 +21,7 @@ func TestNotFoundHandler(t *testing.T) {
 			w:      httptest.NewRecorder(),
 			r:      httptest.NewRequest(http.MethodGet, "/", nil),
 			status: http.StatusNotFound,
-			want:   "{\"detail\":\"not found\",\"details\":[[\"method: GET\",\"path: /\"]],\"requestId\":\"\",\"status\":404,\"title\":\"Not Found\"}\n",
+			want:   "{\"detail\":\"not found\",\"details\":[\"method: GET\",\"path: /\"],\"request_id\":\"\",\"status\":404,\"title\":\"Not Found\"}\n",
 		},
 	}
 
