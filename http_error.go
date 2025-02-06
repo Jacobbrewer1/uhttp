@@ -6,7 +6,7 @@ import (
 	"github.com/jacobbrewer1/uhttp/common"
 )
 
-type StatusCoder interface {
+type StatusCoder interface { // nolint:iface // This is an interface used by external libraries
 	StatusCode() int
 }
 

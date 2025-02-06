@@ -1,6 +1,7 @@
 package uhttp
 
 import (
+	"net/http"
 	"net/http/httptest"
 	"testing"
 
@@ -8,7 +9,7 @@ import (
 )
 
 func TestIsInternal_internal(t *testing.T) {
-	internalRequest := httptest.NewRequest("GET", "/", nil)
+	internalRequest := httptest.NewRequest("GET", "/", http.NoBody)
 	internalRequest.Header.Set("X-Your-Internal-Header", "true")
 
 	got := IsInternal(internalRequest)
@@ -16,7 +17,7 @@ func TestIsInternal_internal(t *testing.T) {
 }
 
 func TestIsInternal_external(t *testing.T) {
-	externalRequest := httptest.NewRequest("GET", "/", nil)
+	externalRequest := httptest.NewRequest("GET", "/", http.NoBody)
 	externalRequest.Header.Set("X-Forwarded-For", "test")
 
 	got := IsInternal(externalRequest)
