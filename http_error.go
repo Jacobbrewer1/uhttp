@@ -34,11 +34,15 @@ func (e *HTTPError) SetRequestId(requestId string) {
 func NewHTTPError(code int, err error, details ...any) *HTTPError {
 	errMsg := &common.ErrorMessage{
 		Title:  http.StatusText(code),
-		Detail: err.Error(),
+		Detail: defaultHttpErrorDetail,
 		Status: code,
 
 		// RequestId will be populated at error write time
 		RequestId: "",
+	}
+
+	if err != nil {
+		errMsg.Detail = err.Error()
 	}
 
 	if len(details) > 0 {
