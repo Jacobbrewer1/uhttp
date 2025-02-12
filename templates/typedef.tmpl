@@ -5,7 +5,7 @@
 type {{.TypeName}} = interface{}
 {{- else -}}
 // {{.TypeName}} defines the model for {{.JsonName}}.
-type {{.TypeName}} {{if or (.IsAlias) (gt (len .Schema.EnumValues) 0) }}={{end}} {{.Schema.TypeDecl}}
+type {{.TypeName}} {{if (.IsAlias) }}={{end}} {{.Schema.TypeDecl}}
 {{- end }}
 {{end}}
 {{- if and (gt (len .Schema.EnumValues) 0) (eq .Schema.GoType "string") }}
