@@ -9,7 +9,7 @@ require (
 	github.com/oapi-codegen/oapi-codegen/v2 v2.4.1
 	github.com/stretchr/testify v1.10.0
 	github.com/vektra/mockery/v2 v2.52.2
-	golang.org/x/time v0.9.0
+	golang.org/x/time v0.10.0
 )
 
 require (
