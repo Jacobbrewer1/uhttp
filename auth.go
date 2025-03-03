@@ -5,16 +5,6 @@ import (
 	"net/http"
 )
 
-const (
-	// authHeader is the Authorization header in a HTTP request.
-	authHeader = "Authorization"
-)
-
-var (
-	// authHeaderKey is the context key to the value of the Authorization HTTP request.
-	authHeaderKey = ContextKey(authHeader)
-)
-
 // AuthHeaderToContext copies the Authorization HTTP header into the provided context.
 func AuthHeaderToContext(ctx context.Context, r *http.Request) context.Context {
 	return AuthToContext(ctx, r.Header.Get(authHeader))
