@@ -2,7 +2,6 @@ package uhttp
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 )
 
@@ -25,12 +24,12 @@ func NotFoundHandler() http.HandlerFunc {
 		}
 
 		details := []any{
-			fmt.Sprintf("method: %s", r.Method),
-			fmt.Sprintf("path: %s", r.URL.Path),
+			"method: " + r.Method,
+			"path: " + r.URL.Path,
 		}
 
 		if r.URL.RawQuery != "" {
-			details = append(details, fmt.Sprintf("query: %s", r.URL.RawQuery))
+			details = append(details, "query: "+r.URL.RawQuery)
 		}
 
 		msg := NewHTTPError(http.StatusNotFound, errNotFound, details...)
@@ -60,12 +59,12 @@ func MethodNotAllowedHandler() http.HandlerFunc {
 		}
 
 		details := []string{
-			fmt.Sprintf("method: %s", r.Method),
-			fmt.Sprintf("path: %s", r.URL.Path),
+			"method: " + r.Method,
+			"path: " + r.URL.Path,
 		}
 
 		if r.URL.RawQuery != "" {
-			details = append(details, fmt.Sprintf("query: %s", r.URL.RawQuery))
+			details = append(details, "query: "+r.URL.RawQuery)
 		}
 
 		msg := NewHTTPError(http.StatusMethodNotAllowed, errMethodNotAllowed, details)
@@ -95,12 +94,12 @@ func UnauthorizedHandler() http.HandlerFunc {
 		}
 
 		details := []string{
-			fmt.Sprintf("method: %s", r.Method),
-			fmt.Sprintf("path: %s", r.URL.Path),
+			"method: ", r.Method,
+			"path: ", r.URL.Path,
 		}
 
 		if r.URL.RawQuery != "" {
-			details = append(details, fmt.Sprintf("query: %s", r.URL.RawQuery))
+			details = append(details, "query: "+r.URL.RawQuery)
 		}
 
 		msg := NewHTTPError(http.StatusUnauthorized, errUnauthorized, details)
