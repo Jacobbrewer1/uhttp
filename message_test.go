@@ -1,40 +1,166 @@
 package uhttp
 
 import (
+	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	"github.com/stretchr/testify/suite"
+	"github.com/jacobbrewer1/uhttp/common"
+	"github.com/stretchr/testify/require"
 )
 
-type MessageSuite struct {
-	suite.Suite
+func TestMustSendMessageWithStatus(t *testing.T) {
+	tests := []struct {
+		name    string
+		status  int
+		message string
+	}{
+		{
+			name:    "success",
+			status:  http.StatusOK,
+			message: "hello",
+		},
+		{
+			name:    "error",
+			status:  http.StatusInternalServerError,
+			message: "error",
+		},
+	}
 
-	w *httptest.ResponseRecorder
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			w := httptest.NewRecorder()
+			MustSendMessageWithStatus(w, tt.status, tt.message)
+
+			res := w.Result()
+			t.Cleanup(func() {
+				require.NoError(t, res.Body.Close())
+			})
+
+			require.Equal(t, tt.status, res.StatusCode)
+			var msg common.Message
+			err := DecodeJSON(res.Body, &msg)
+			require.NoError(t, err)
+			require.Equal(t, tt.message, msg.Message)
+		})
+	}
 }
 
-func TestMessageSuite(t *testing.T) {
-	suite.Run(t, new(MessageSuite))
+func TestSendMessageWithStatus(t *testing.T) {
+	tests := []struct {
+		name    string
+		status  int
+		message string
+		wantErr bool
+	}{
+		{
+			name:    "success",
+			status:  http.StatusOK,
+			message: "hello",
+			wantErr: false,
+		},
+		{
+			name:    "error",
+			status:  http.StatusInternalServerError,
+			message: "error",
+			wantErr: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			w := httptest.NewRecorder()
+			err := SendMessageWithStatus(w, tt.status, tt.message)
+			if tt.wantErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+				res := w.Result()
+				t.Cleanup(func() {
+					require.NoError(t, res.Body.Close())
+				})
+
+				require.Equal(t, tt.status, res.StatusCode)
+				var msg common.Message
+				err := DecodeJSON(res.Body, &msg)
+				require.NoError(t, err)
+				require.Equal(t, tt.message, msg.Message)
+			}
+		})
+	}
 }
 
-func (s *MessageSuite) SetupTest() {
-	s.w = httptest.NewRecorder()
+func TestMustSendMessage(t *testing.T) {
+	tests := []struct {
+		name    string
+		message string
+	}{
+		{
+			name:    "success",
+			message: "hello",
+		},
+		{
+			name:    "error",
+			message: "error",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			w := httptest.NewRecorder()
+			MustSendMessage(w, tt.message)
+
+			res := w.Result()
+			t.Cleanup(func() {
+				require.NoError(t, res.Body.Close())
+			})
+
+			require.Equal(t, http.StatusOK, res.StatusCode)
+			var msg common.Message
+			err := DecodeJSON(res.Body, &msg)
+			require.NoError(t, err)
+			require.Equal(t, tt.message, msg.Message)
+		})
+	}
 }
 
-func (s *MessageSuite) TestSendMessage() {
-	SendMessage(s.w, "test")
+func TestSendMessage(t *testing.T) {
+	tests := []struct {
+		name    string
+		message string
+		wantErr bool
+	}{
+		{
+			name:    "success",
+			message: "hello",
+			wantErr: false,
+		},
+		{
+			name:    "error",
+			message: "error",
+			wantErr: false,
+		},
+	}
 
-	s.Equal(200, s.w.Code)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			w := httptest.NewRecorder()
+			err := SendMessage(w, tt.message)
+			if tt.wantErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+				res := w.Result()
+				t.Cleanup(func() {
+					require.NoError(t, res.Body.Close())
+				})
 
-	expectedResponse := "{\"message\":\"test\"}\n"
-	s.Equal(expectedResponse, s.w.Body.String())
-}
-
-func (s *MessageSuite) TestSendMessageWithStatus() {
-	SendMessageWithStatus(s.w, 400, "test")
-
-	s.Equal(400, s.w.Code)
-
-	expectedResponse := "{\"message\":\"test\"}\n"
-	s.Equal(expectedResponse, s.w.Body.String())
+				require.Equal(t, http.StatusOK, res.StatusCode)
+				var msg common.Message
+				err := DecodeJSON(res.Body, &msg)
+				require.NoError(t, err)
+				require.Equal(t, tt.message, msg.Message)
+			}
+		})
+	}
 }
