@@ -57,6 +57,22 @@ func TestMustEncode(t *testing.T) {
 	}
 }
 
+func TestMustEncode_BadJSON(t *testing.T) {
+	type response struct {
+		Message chan int `json:"message"`
+	}
+
+	w := httptest.NewRecorder()
+	MustEncode(w, http.StatusOK, response{Message: make(chan int)})
+
+	res := w.Result()
+	t.Cleanup(func() {
+		require.NoError(t, res.Body.Close())
+	})
+
+	require.Equal(t, http.StatusOK, res.StatusCode)
+}
+
 func TestEncode(t *testing.T) {
 	type response struct {
 		Message string `json:"message"`
@@ -149,6 +165,23 @@ func TestEncodeJSON(t *testing.T) {
 			require.Equal(t, tt.wantBody, string(body))
 		})
 	}
+}
+
+func TestEncodeJSON_BadJSON(t *testing.T) {
+	type response struct {
+		Message chan int `json:"message"`
+	}
+
+	w := httptest.NewRecorder()
+	err := EncodeJSON(w, http.StatusOK, response{Message: make(chan int)})
+	require.EqualError(t, err, "json: unsupported type: chan int")
+
+	res := w.Result()
+	t.Cleanup(func() {
+		require.NoError(t, res.Body.Close())
+	})
+
+	require.Equal(t, http.StatusOK, res.StatusCode)
 }
 
 func TestDecodeJSONBody(t *testing.T) {
