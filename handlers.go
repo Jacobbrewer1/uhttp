@@ -36,7 +36,7 @@ func NotFoundHandler() http.HandlerFunc {
 
 		// Is there a request ID in the context?
 		reqId := RequestIDFromContext(r.Context())
-		if reqId != "" {
+		if reqId == "" {
 			reqId = RequestIDFromContext(GenerateRequestIDToContext(r))
 		}
 
@@ -58,7 +58,7 @@ func MethodNotAllowedHandler() http.HandlerFunc {
 			)
 		}
 
-		details := []string{
+		details := []any{
 			"method: " + r.Method,
 			"path: " + r.URL.Path,
 		}
@@ -67,7 +67,7 @@ func MethodNotAllowedHandler() http.HandlerFunc {
 			details = append(details, "query: "+r.URL.RawQuery)
 		}
 
-		msg := NewHTTPError(http.StatusMethodNotAllowed, errMethodNotAllowed, details)
+		msg := NewHTTPError(http.StatusMethodNotAllowed, errMethodNotAllowed, details...)
 
 		// Is there a request ID in the context?
 		reqId := RequestIDFromContext(r.Context())
@@ -93,16 +93,16 @@ func UnauthorizedHandler() http.HandlerFunc {
 			)
 		}
 
-		details := []string{
-			"method: ", r.Method,
-			"path: ", r.URL.Path,
+		details := []any{
+			"method: " + r.Method,
+			"path: " + r.URL.Path,
 		}
 
 		if r.URL.RawQuery != "" {
 			details = append(details, "query: "+r.URL.RawQuery)
 		}
 
-		msg := NewHTTPError(http.StatusUnauthorized, errUnauthorized, details)
+		msg := NewHTTPError(http.StatusUnauthorized, errUnauthorized, details...)
 
 		// Is there a request ID in the context?
 		reqId := RequestIDFromContext(r.Context())
