@@ -59,7 +59,7 @@ func IsProxied(r *http.Request) bool {
 func InternalOnly(next http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if !IsInternal(r) {
-			SendMessageWithStatus(w, http.StatusForbidden, "Forbidden")
+			NotFoundHandler().ServeHTTP(w, r)
 			return
 		}
 		next.ServeHTTP(w, r)

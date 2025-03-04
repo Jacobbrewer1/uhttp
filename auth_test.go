@@ -107,5 +107,6 @@ func TestInternalOnly_NotInternal(t *testing.T) {
 	w := httptest.NewRecorder()
 	InternalOnly(handler).ServeHTTP(w, externalRequest)
 
-	require.Equal(t, http.StatusForbidden, w.Code)
+	// We want to pretend that the endpoint doesn't exist for external requests
+	require.Equal(t, http.StatusNotFound, w.Code)
 }
