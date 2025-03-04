@@ -27,15 +27,18 @@ func TestAuthHeaderToContextMux(t *testing.T) {
 	request := httptest.NewRequest("GET", "/", http.NoBody)
 	request.Header.Set("Authorization", "Bearer token")
 
+	var got string
+	var ok bool
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
-		got, ok := ctx.Value(authHeaderKey).(string)
-		require.True(t, ok)
-		require.Equal(t, "Bearer token", got)
+		got, ok = ctx.Value(authHeaderKey).(string)
 	})
 
 	mux := AuthHeaderToContextMux()(handler)
 	mux.ServeHTTP(httptest.NewRecorder(), request)
+
+	require.True(t, ok)
+	require.Equal(t, "Bearer token", got)
 }
 
 func TestAuthToContext(t *testing.T) {
