@@ -63,7 +63,7 @@ func TestAuthHeaderFromContext_IncorrectType(t *testing.T) {
 	ctx = context.WithValue(ctx, authHeaderKey, 42)
 
 	got := AuthHeaderFromContext(ctx)
-	require.Equal(t, "", got)
+	require.Empty(t, got)
 }
 
 func TestIsInternal_internal(t *testing.T) {
