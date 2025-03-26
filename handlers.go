@@ -11,6 +11,18 @@ var (
 	errUnauthorized     = errors.New("unauthorized")
 )
 
+// WrapHandler wraps the handler with the specified middlewares, making the execution order the inverse of the parameter declaration.
+func WrapHandler(handler http.HandlerFunc, middlewares ...MiddlewareFunc) http.Handler {
+	var wrappedHandler http.Handler = handler
+	for _, middleware := range middlewares {
+		if middleware == nil {
+			continue
+		}
+		wrappedHandler = middleware(wrappedHandler)
+	}
+	return wrappedHandler
+}
+
 // NotFoundHandler returns a handler that returns a 404 response.
 func NotFoundHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
