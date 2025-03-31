@@ -2,11 +2,9 @@ module github.com/jacobbrewer1/uhttp
 
 go 1.24
 
-toolchain go1.24.0
-
 require (
 	github.com/google/uuid v1.6.0
-	github.com/gorilla/mux v1.8.0
+	github.com/gorilla/mux v1.8.1
 	github.com/oapi-codegen/oapi-codegen/v2 v2.4.1
 	github.com/prometheus/client_golang v1.21.1
 	github.com/stretchr/testify v1.10.0
