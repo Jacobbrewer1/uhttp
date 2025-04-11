@@ -28,7 +28,7 @@ type rateLimiter struct {
 
 // NewRateLimiter creates a new rate limiter.
 func NewRateLimiter(rps float64, burst int, opts ...RateLimiterOption) RateLimiter {
-	if burst == 0 || burst < int(rps) {
+	if burst == 0 || float64(burst) < rps {
 		burst = int(rps)
 	}
 
