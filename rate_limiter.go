@@ -63,5 +63,5 @@ func (r *rateLimiter) log(level slog.Level, msg string, args ...any) {
 		return
 	}
 
-	r.l.Log(context.Background(), level, msg, args...)
+	r.l.Log(context.Background(), level, msg, args...) // nolint:sloglint // Handler around the messages passed in to prevent panics on nil logger
 }
