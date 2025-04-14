@@ -2,7 +2,6 @@ package uhttp
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 	"time"
 
@@ -47,7 +46,7 @@ func NewRedisRateLimiter(keydb goredis.Pool, rps float64, burst int, opts ...Rat
 // Allow returns true if the request is allowed.
 func (r *redisRateLimiter) Allow(key string) bool {
 	ctx := context.Background()
-	redisKey := fmt.Sprintf("rate_limit:%s", key)
+	redisKey := "rate_limit:" + key
 
 	// Try to set key with value 1 and 1-second TTL if not exists
 	setReply, err := redis.String(r.keydb.DoCtx(ctx, "SET", redisKey, 1, "EX", int(r.window.Seconds()), "NX"))
