@@ -9,6 +9,7 @@ import (
 	"github.com/jacobbrewer1/goredis"
 )
 
+// redisRateLimiter is a rate limiter that uses Redis to store the rate limit.
 type redisRateLimiter struct {
 	keydb  goredis.Pool
 	window time.Duration
