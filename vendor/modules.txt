@@ -30,6 +30,9 @@ github.com/go-openapi/swag
 ## explicit; go 1.18
 github.com/go-viper/mapstructure/v2
 github.com/go-viper/mapstructure/v2/internal/errors
+# github.com/gomodule/redigo v1.9.2
+## explicit; go 1.17
+github.com/gomodule/redigo/redis
 # github.com/google/uuid v1.6.0
 ## explicit
 github.com/google/uuid
@@ -48,6 +51,9 @@ github.com/inconshreveable/mousetrap
 # github.com/invopop/yaml v0.3.1
 ## explicit; go 1.14
 github.com/invopop/yaml
+# github.com/jacobbrewer1/goredis v0.1.7
+## explicit; go 1.24
+github.com/jacobbrewer1/goredis
 # github.com/jinzhu/copier v0.4.0
 ## explicit; go 1.13
 github.com/jinzhu/copier
@@ -110,6 +116,7 @@ github.com/prometheus/client_golang/internal/github.com/golang/gddo/httputil
 github.com/prometheus/client_golang/internal/github.com/golang/gddo/httputil/header
 github.com/prometheus/client_golang/prometheus
 github.com/prometheus/client_golang/prometheus/internal
+github.com/prometheus/client_golang/prometheus/promauto
 github.com/prometheus/client_golang/prometheus/promhttp
 # github.com/prometheus/client_model v0.6.1
 ## explicit; go 1.19
