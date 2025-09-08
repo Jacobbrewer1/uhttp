@@ -1,6 +1,6 @@
 module github.com/jacobbrewer1/uhttp
 
-go 1.24
+go 1.24.0
 
 require (
 	github.com/gomodule/redigo v1.9.2
@@ -11,7 +11,7 @@ require (
 	github.com/prometheus/client_golang v1.22.0
 	github.com/stretchr/testify v1.10.0
 	github.com/vektra/mockery/v2 v2.53.3
-	golang.org/x/time v0.11.0
+	golang.org/x/time v0.13.0
 )
 
 require (
